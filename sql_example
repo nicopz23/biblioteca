@@ -1,0 +1,54 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema biblioteca
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `biblioteca` DEFAULT CHARACTER SET utf8;
+USE `biblioteca`;
+
+-- -----------------------------------------------------
+-- Table `biblioteca`.`Autores`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `biblioteca`.`Autores` (
+  `idAutores` INT NOT NULL AUTO_INCREMENT,
+  `nombre_completo` VARCHAR(255) NULL,
+  `correo_contacto` VARCHAR(255) NULL,
+  PRIMARY KEY (`idAutores`))
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `biblioteca`.`Libros`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `biblioteca`.`Libros` (
+  `idLibros` INT NOT NULL AUTO_INCREMENT,
+  `idAutores` INT NOT NULL,
+  `Titulo` VARCHAR(45) NULL,
+  `descripcion` VARCHAR(255) NULL,
+  `fecha_publicacion` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idLibros`),
+  INDEX `fk_Libros_Autores_idx` (`idAutores` ASC),
+  CONSTRAINT `fk_Libros_Autores`
+    FOREIGN KEY (`idAutores`)
+    REFERENCES `biblioteca`.`Autores` (`idAutores`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `biblioteca`.`Usuarios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `biblioteca`.`Usuarios` (
+  `idUsuarios` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(255) NOT NULL,
+   `email` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`idUsuarios`),
+  UNIQUE KEY `email_UNIQUE` (`email`))
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
