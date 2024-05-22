@@ -89,7 +89,6 @@ if (isset($_POST["nombre_completo"])) {
         </div>
     </nav>
 
-
     <div class="container mt-5 row">
         <h1 class="mb-4">Crear Nuevo Autor</h1>
         <form action="" method="POST">

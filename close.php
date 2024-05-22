@@ -12,7 +12,6 @@ if (isset($_COOKIE[session_name()])) {
 
 // Destruir la sesión
 session_destroy();
-
 // Redirigir al usuario a una página de inicio de sesión u otra página deseada
 header("Location: ./");
 exit;

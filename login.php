@@ -74,7 +74,6 @@ if (isset($_POST["email"])) {
                             Don't have account? Register
                         </a>
 
-
                     </form>
                 </div>
             </div>

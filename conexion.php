@@ -1,6 +1,7 @@
 <?php
 require_once 'config_Prod.php';
 // Datos de conexión a la base de datos
+
 $servername = DB_HOST;
 $username = DB_USER;
 $password = DB_PASSWORD;

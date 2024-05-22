@@ -134,7 +134,6 @@ if (isset($_POST["idautor"])) {
                         <th scope="col">#</th>
                         <th scope="col">Autores</th>
 
-
                     </tr>
                 </thead>
                 <tbody>

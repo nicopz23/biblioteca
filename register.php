@@ -63,7 +63,6 @@ if (isset($_POST["username"])) {
                                     <div class="col-md-9 pe-5">
 
                                         <input type="text" name="username" class="form-control form-control-lg" placeholder="Username" />
-
                                     </div>
                                 </div>
 
