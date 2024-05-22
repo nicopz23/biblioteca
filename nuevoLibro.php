@@ -1,6 +1,11 @@
 <?php
 require_once 'conexion.php';
 session_start();
+if (isset($_SESSION["username"])) {
+    
+}else{
+    header("Location: ./");
+}
 $sql = 'SELECT * FROM autores';
 
 // Verificar si se ha enviado una solicitud de búsqueda

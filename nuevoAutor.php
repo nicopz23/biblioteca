@@ -1,7 +1,11 @@
 <?php
 require_once 'conexion.php';
 session_start();
-
+if (isset($_SESSION["username"])) {
+    
+}else{
+    header("Location: ./");
+}
 if (isset($_POST["nombre_completo"])) {
     $sql_libro = 'insert into autores (nombre_completo,correo_contacto) values (?,?)';
     $nombre = $_POST["nombre_completo"];
