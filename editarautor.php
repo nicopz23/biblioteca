@@ -4,37 +4,36 @@ if (isset($_SESSION["username"])) {
     if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         require_once 'conexion.php';
     
-        $idLibro = $_GET['id'];
+        $idautor = $_GET['id'];
     
-        $sql = "select * from autores where idLibros = :idLibro";
+        $sql = "select * from autores where idAutores = :idautor";
         $consulta = $conn->prepare($sql);
     
-        $consulta->bindParam(':idLibro', $idLibro, PDO::PARAM_INT);
+        $consulta->bindParam(':idautor', $idautor, PDO::PARAM_INT);
     
         $consulta->execute();
         $resultados = $consulta->fetch(PDO::FETCH_ASSOC);
     } else {
-        echo "ID de libro no válido.";
+        echo "ID de autor no válido.";
     }
-    if (isset($_POST["idautor"])) {
+    if (isset($_POST["nombre_completo"])) {
         require_once 'conexion.php';
-        $sql_libro = 'update libros set idAutores=?, Titulo=?, descripcion=? where idLibros = ?';
-        $idautor = $_POST["idautor"];
-        $titulo = $_POST["titulo"];
-        $descripcion = $_POST["descripcion"];
-    
+        $sql_libro = 'update autores set nombre_completo=?, correo_contacto=? where idAutores = ?';
+        
+        $nombre = $_POST["nombre_completo"];
+        $correo = $_POST["correo_contacto"];
+        
         $stmt = $conn->prepare($sql_libro);
-        $stmt->bindParam(1, $idautor);
-        $stmt->bindParam(2, $titulo);
-        $stmt->bindParam(3, $descripcion);
-        $stmt->bindParam(4, $idLibro);
+        $stmt->bindParam(1, $nombre);
+        $stmt->bindParam(2, $correo);
+        $stmt->bindParam(3, $idautor);
         $stmt->execute();
     
         $rowCount = $stmt->rowCount();
         if ($rowCount > 0) {
             header("Location: ./");
         } else {
-            $mensaje = 'Ha ocurrido un error al editar el libro, intente de nuevo';
+            $mensaje = 'Ha ocurrido un error al editar el autor, intente de nuevo';
         }
     }
 }else{
@@ -114,25 +113,21 @@ if (isset($_SESSION["username"])) {
     </nav>
 
     <div class="container mt-5 row">
-        <h1 class="mb-4">Editar Libro</h1>
+        <h1 class="mb-4">Crear Nuevo Autor</h1>
         <form action="" method="POST">
             <div class="mb-3">
-                <label for="number" class="form-label">Autor</label>
-                <input type="number" class="form-control" id="idautor" name="idautor" value="<?php echo $resultados['idAutores']; ?>" required></>
+                <label for="nombre_completo" class="form-label">Nombre Completo</label>
+                <input type="text" class="form-control" id="nombre_completo" name="nombre_completo" value="<?php echo $resultados['nombre_completo']; ?>" required>
             </div>
             <div class="mb-3">
-                <label for="titulo" class="form-label">Título</label>
-                <input type="text" class="form-control" id="titulo" name="titulo" value="<?php echo $resultados['Titulo']; ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="descripcion" class="form-label">Descripción</label>
-                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required><?php echo $resultados['descripcion']; ?></textarea>
+                <label for="correo_contacto" class="form-label">Correo de Contacto</label>
+                <input type="email" class="form-control" id="correo_contacto" name="correo_contacto" value="<?php echo $resultados['correo_contacto']; ?>" required>
             </div>
             <?php if (isset($mensaje)) {
                 echo "<p> $mensaje </p>";
             }
             ?>
-            <button type="submit" class="btn btn-primary">Editar Libro</button>
+            <button type="submit" class="btn btn-primary">Editar Autor</button>
         </form>
     </div>
 

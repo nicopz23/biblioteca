@@ -119,7 +119,7 @@ if (isset($_POST["idautor"])) {
     </nav>
 
     <div class="container row">
-        <h3>Libros</h3>
+        <h3>Autores</h3>
         <form action="" method="GET" class="mb-3">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Buscar por nombre de autor" name="search">
@@ -138,6 +138,7 @@ if (isset($_POST["idautor"])) {
 
                         <th scope="col">#</th>
                         <th scope="col">Autores</th>
+                        <th scope="col">Acciones</th>
 
                     </tr>
                 </thead>
@@ -152,6 +153,8 @@ if (isset($_POST["idautor"])) {
 
                             <td scope="row" style="background-color:#343a40; color:white;"><?php echo $libro['idAutores']; ?></td>
                             <td scope="row" style="background-color:#343a40; color:white;"><?php echo $libro['nombre_completo']; ?></td>
+                            <td scope="row" style="background-color:#343a40; color:white;"><?php echo "<i class='fas fa-trash-alt delete-book' data-book-id='" . $libro['idAutores'] . "'></i>"; ?>
+                                <a href="editarautor?id=<?php echo $libro['idAutores']; ?>"><i class='fas fa-edit edit-book'></i></a>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -186,6 +189,28 @@ if (isset($_POST["idautor"])) {
         </form>
     </div>
 
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 style="color: #343a40;" class="modal-title" id="exampleModalLabel">Confirmación de Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="color: #343a40;">
+                    ¿Estás seguro de que quieres borrar este autor para siempre?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="confirmDeleteButton">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
@@ -195,7 +220,41 @@ if (isset($_POST["idautor"])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+            const deleteIcons = document.querySelectorAll('.delete-book');
 
+            deleteIcons.forEach(icon => {
+                icon.addEventListener('click', function() {
+                    const bookId = this.getAttribute('data-book-id');
+                    confirmDeleteButton.setAttribute('data-book-id', bookId);
+                    const modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+                    modal.show();
+                });
+            });
+
+            confirmDeleteButton.addEventListener('click', function() {
+                const bookId = this.getAttribute('data-book-id');
+                fetch('eliminar_autor?id=' + bookId)
+                    .then(response => {
+                        if (response.ok) {
+                            // Aquí puedes actualizar la página o realizar cualquier otra acción necesaria después de eliminar el libro
+                            console.log('Libro eliminado exitosamente');
+                            location.reload()
+                        } else {
+                            console.error('Error al eliminar el libro');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error de red:', error);
+                    });
+
+                const modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+                modal.hide();
+            });
+        });
+    </script>
 </body>
 
 </html>

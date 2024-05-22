@@ -3,12 +3,12 @@ if (isset($_SESSION["username"])) {
     if(isset($_GET['id']) && is_numeric($_GET['id'])) {
         require_once 'conexion.php';
     
-        $idLibro = $_GET['id'];
+        $idautor = $_GET['id'];
     
-        $sql = "DELETE FROM libros WHERE idLibros = :idLibro";
+        $sql = "DELETE FROM autores WHERE idAutores = :idautor";
         $consulta = $conn->prepare($sql);
     
-        $consulta->bindParam(':idLibro', $idLibro, PDO::PARAM_INT);
+        $consulta->bindParam(':idautor', $idautor, PDO::PARAM_INT);
     
         if($consulta->execute()) {
             if($consulta->rowCount()>0){
@@ -20,10 +20,8 @@ if (isset($_SESSION["username"])) {
         }
     } else {
         echo "ID de libro no válido.";
-    }
+    }    
 }else{
     header("Location: ./");
     exit();
 }
-
-
